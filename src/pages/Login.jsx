@@ -123,9 +123,9 @@ const Login = ({ setShowSignUp }) => {
         <div className="w-full bg-indigo-50 border-b border-indigo-200 p-3 flex justify-center items-center gap-2 text-indigo-800 text-sm shadow-sm mb-2 mt-2">
           <Info className="h-4 w-4" />
           <p>
-            <strong>Demo Login:</strong> admin@example.com{' '}
+            <strong>Demo Login:</strong> guest@example.com{' '}
             <span className="mx-2 text-indigo-300">|</span>
-            <strong>Password:</strong> password123
+            <strong>Password:</strong> Guest123
           </p>
         </div>
         <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl">
