@@ -231,6 +231,14 @@ const StudentManagement = () => {
                       const stats = getAttendanceStats(
                         student.attendanceHistory
                       );
+
+                      const today = new Date().toISOString().split('T')[0];
+                      const attendanceDoneToday =
+                        student.attendanceHistory?.some(
+                          (record) => record.date === today
+                        );
+                      const isAttendanceDisabled = attendanceDoneToday;
+
                       const weekly = getWeeklyStatus(student);
                       return (
                         <div
@@ -293,20 +301,26 @@ const StudentManagement = () => {
                                 onClick={() =>
                                   handleAttendance(student.id, 'Present')
                                 }
-                                disabled={updating === student.id}
+                                disabled={
+                                  updating === student.id ||
+                                  isAttendanceDisabled
+                                }
                                 className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md">
                                 <CheckCircle className="h-4 w-4" />
-                                Present
+                                {isAttendanceDisabled ? 'Marked' : 'Present'}
                               </button>
 
                               <button
                                 onClick={() =>
                                   handleAttendance(student.id, 'Absent')
                                 }
-                                disabled={updating === student.id}
+                                disabled={
+                                  updating === student.id ||
+                                  isAttendanceDisabled
+                                }
                                 className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md">
                                 <XCircle className="h-4 w-4" />
-                                Absent
+                                {isAttendanceDisabled ? 'Marked' : 'Absent'}
                               </button>
                             </div>
 
