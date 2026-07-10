@@ -320,7 +320,7 @@ const StudentManagement = () => {
                                 }
                                 className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md">
                                 <XCircle className="h-4 w-4" />
-                                {isAttendanceDisabled ? 'Marked' : 'Absent'}
+                                Absent
                               </button>
                             </div>
 
