@@ -212,11 +212,31 @@ v .rbc-toolbar button {
   border: none !important;
 }
 
-/* Optional: Make the slot lines very faint so they don't look "dirty" on the white */
+/* Make the slot lines very faint so they don't look "dirty" on the white */
 .rbc-day-slot .rbc-timeslot-group {
   border-bottom: 1px solid #f9fafb !important;
 }
+/* Force the calendar toolbar into a 3-column layout to center the date and prevent overlap */
+@media (min-width: 768px) {
+  .rbc-toolbar {
+    display: grid !important;
+    /* Creates 3 columns: left side takes up remaining space, middle fits the text, right side balances the left */
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center;
+  }
 
+  /* Forces the navigation buttons (Today, Back, Next) to stay on the far left */
+  .rbc-toolbar > :nth-child(1) {
+    justify-self: start !important;
+  }
+
+  /* Forces the date label to stay perfectly in the middle column */
+  .rbc-toolbar .rbc-toolbar-label {
+    justify-self: center !important;
+    width: auto !important;
+    padding: 0 1rem; /* Adds a small buffer so buttons can never physically touch the text */
+  }
+}
 @media (max-width: 640px) {
   .rbc-toolbar {
     flex-direction: column-reverse !important;

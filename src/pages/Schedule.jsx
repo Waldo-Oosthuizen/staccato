@@ -29,7 +29,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-// Help: Day name to index (relative to Monday start)
+// Day name to index (relative to Monday start)
 const dayNameToIndex = {
   Monday: 0,
   Tuesday: 1,
@@ -153,11 +153,10 @@ const Schedule = () => {
   const eventStyleGetter = () => {
     return {
       style: {
-        // Use your signature emerald gradient hex codes
         background: 'linear-gradient(to right, #00c853, #009624)',
         borderRadius: '6px',
         opacity: 0.9,
-        color: 'white', // Text color
+        color: 'white',
         border: 'none',
         fontSize: '0.85rem',
         fontWeight: '500',
@@ -179,8 +178,9 @@ const Schedule = () => {
             page to see them here.
           </p>
         )}
-        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto  rounded-md">
-          {' '}
+
+        {/* FIX: Removed overflow-y-auto and overflow-x-auto. Fixed calc() syntax. */}
+        <div className="mt-2 h-[calc(100vh-180px)] sm:h-[calc(100vh-100px)] mb-4 rounded-md">
           <Calendar
             localizer={localizer}
             events={
@@ -193,7 +193,8 @@ const Schedule = () => {
             eventPropGetter={eventStyleGetter}
             views={{ day: true }}
             defaultView={defaultView}
-            style={{ height: '90vh', width: '100%' }}
+            /* FIX: Let the Calendar take 100% of the parent wrapper's height */
+            style={{ height: '100%', width: '100%' }}
             showMultiDayTimes={true}
             min={new Date(1970, 0, 1, 9, 0)} // 08:00
             max={new Date(1970, 0, 1, 20, 0)} // 20:00
