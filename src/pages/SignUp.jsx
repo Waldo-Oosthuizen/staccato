@@ -28,13 +28,15 @@ const SignUp = ({ setShowSignUp }) => {
       errors.email = 'Please enter a valid email';
     }
 
-    // Check if the password field is empty or too short
+    // Validate password
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
     if (!formData.password) {
       errors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
+    } else if (!passwordRegex.test(formData.password)) {
+      errors.password =
+        'Password must be at least 8 characters and include an uppercase letter, lowercase letter, and number.';
     }
-
     setValidationErrors(errors); // Update validation errors state
     return Object.keys(errors).length === 0; // Return true if no validation errors
   }, [formData]);
@@ -178,12 +180,16 @@ const SignUp = ({ setShowSignUp }) => {
               aria-label={showPassword ? 'Hide password' : 'Show password'}>
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
-            {validationErrors.password && (
-              <p className="mt-1 text-sm text-red-600" id="password-error">
-                {validationErrors.password}
-              </p>
-            )}
           </div>
+          {validationErrors.password ? (
+            <p className="mt-1 text-sm text-red-600">
+              {validationErrors.password}
+            </p>
+          ) : (
+            <p className="mt-1 text-xs text-gray-500">
+              At least 8 characters, 1 uppercase, 1 lowercase and 1 number.
+            </p>
+          )}
 
           {/* Submit button */}
           <button
