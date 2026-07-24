@@ -43,6 +43,10 @@ const SignUp = ({ setShowSignUp }) => {
   const handleChange = (e) => {
     const { name, value } = e.target; // Extract input field name and value
     setFormData((prev) => ({ ...prev, [name]: value })); // Update the corresponding field in the formData state
+    // Clear errors
+    if (error) {
+      setError('');
+    }
 
     // Clear validation error for the field being updated
     if (validationErrors[name]) {
@@ -92,9 +96,15 @@ const SignUp = ({ setShowSignUp }) => {
   const getFirebaseErrorMessage = (errorCode) => {
     switch (errorCode) {
       case 'auth/email-already-in-use':
-        return 'This email is already registered.'; // Error for duplicate email registration
+        return 'This email is already registered.';
       case 'auth/weak-password':
-        return 'Password must be at least 6 characters.'; // Error for weak password
+        return 'Password must be at least 6 characters.';
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/network-request-failed':
+        return 'Please check your internet connection.';
+      case 'auth/popup-closed-by-user':
+        return 'Google sign up was cancelled.';
       default:
         return 'An error occurred. Please try again.'; // Generic error message
     }
@@ -112,6 +122,8 @@ const SignUp = ({ setShowSignUp }) => {
       <div className="max-w-md w-full space-y-8 bg-white  p-8 rounded-xl shadow-2xl">
         {/* Page title */}
         <div>
+          {/* Display error messages */}
+          {error && <p className="text-red-600 mb-4">{error}</p>}
           <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign Up
           </h1>
@@ -119,9 +131,6 @@ const SignUp = ({ setShowSignUp }) => {
             Please sign up to continue
           </p>
         </div>
-
-        {/* Display error messages */}
-        {error && <p className="text-red-600 mb-4">{error}</p>}
 
         {/* Sign-up form */}
         <form onSubmit={handleSignUp} className="mt-8 space-y-6">
