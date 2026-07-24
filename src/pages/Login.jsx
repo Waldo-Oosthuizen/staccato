@@ -20,13 +20,8 @@ const Login = ({ setShowSignUp }) => {
   const [validationErrors, setValidationErrors] = useState({});
   const navigate = useNavigate();
 
-  /* ----------  CLEAR ERRORS ON INPUT  ---------- */
-  useEffect(() => {
-    if (error) setError('');
-  }, [formData, error]);
-
   /* ----------  VALIDATION  ---------- */
-  const validateForm = useCallback(async () => {
+  const validateForm = useCallback(() => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -53,6 +48,17 @@ const Login = ({ setShowSignUp }) => {
     if (validationErrors[name]) {
       setValidationErrors((prev) => ({ ...prev, [name]: '' }));
     }
+    // Clear errors
+    if (error) {
+      setError('');
+    }
+
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
   };
 
   /* ----------  HANDLE EMAIL/PASSWORD LOGIN  ---------- */
@@ -68,6 +74,10 @@ const Login = ({ setShowSignUp }) => {
       // 2. Navigate immediately
       navigate('/home');
     } catch (err) {
+      console.log('Firebase Error Code:', err.code);
+      console.log('Firebase Error Message:', err.message);
+      console.log('Full Error:', err);
+
       const errorMessage = getFirebaseErrorMessage(err.code);
       setError(errorMessage);
     } finally {
@@ -100,14 +110,23 @@ const Login = ({ setShowSignUp }) => {
   /* ----------  HANDLE FIREBASE ERRORS  ---------- */
   const getFirebaseErrorMessage = (errorCode) => {
     switch (errorCode) {
-      case 'auth/user-not-found':
-        return 'No account found with this email';
-      case 'auth/wrong-password':
-        return 'Incorrect password';
+      case 'auth/invalid-credential':
+        return 'Invalid email or password';
+
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address';
+
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your internet connection.';
+
+      case 'auth/popup-closed-by-user':
+        return 'Google sign-in was cancelled.';
+
       case 'auth/too-many-requests':
-        return 'Too many attempts. Please try again later';
+        return 'Too many attempts. Please try again later.';
+
       default:
-        return 'An error occurred. Please try again';
+        return 'An error occurred. Please try again.';
     }
   };
 
@@ -130,6 +149,12 @@ const Login = ({ setShowSignUp }) => {
         </div>
         <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl">
           <div>
+            {/* Error message */}
+            {error && (
+              <div className="rounded-md bg-red-50 p-4">
+                <h3 className="text-sm font-medium text-red-800">{error}</h3>
+              </div>
+            )}
             <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Welcome Back
             </h1>
@@ -201,13 +226,6 @@ const Login = ({ setShowSignUp }) => {
                 )}
               </div>
             </div>
-
-            {/* Error message */}
-            {error && (
-              <div className="rounded-md bg-red-50 p-4">
-                <h3 className="text-sm font-medium text-red-800">{error}</h3>
-              </div>
-            )}
 
             {/* Submit button */}
             <div>
