@@ -265,7 +265,7 @@ const Login = ({ setShowSignUp }) => {
 
           {/* Sign-up Link */}
           <p className="mt-2 text-center text-sm text-gray-600">
-            {"Don't have an account?"}
+            {"Don't have an account? "}
             <button
               onClick={() => setShowSignUp(true)}
               className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
