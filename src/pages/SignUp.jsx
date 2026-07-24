@@ -123,7 +123,11 @@ const SignUp = ({ setShowSignUp }) => {
         {/* Page title */}
         <div>
           {/* Display error messages */}
-          {error && <p className="text-red-600 mb-4">{error}</p>}
+          {error && (
+            <div className="rounded-md bg-red-50 border border-red-200 p-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
           <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign Up
           </h1>
