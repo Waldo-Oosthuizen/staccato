@@ -27,13 +27,20 @@ import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 // For filter
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
+const getToday = () => {
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+  });
+
+  return DAYS.includes(today) ? today : 'all';
+};
+
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  /* ---------- FILTER BY DAY ---------- */
   const [searchParams, setSearchParams] = useSearchParams();
   const dayFilter = searchParams.get('day') || 'all';
 

@@ -161,8 +161,17 @@ const Students = () => {
 
   /* ---------- FILTER ---------- */
   const [searchTerm, setSearchTerm] = useState('');
+
   /* ---------- FILTER BY DAY ---------- */
-  const [dayFilter, setDayFilter] = useState('');
+  // get todays date and filter
+  const getToday = () => {
+    const today = new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+    });
+
+    return DAYS.includes(today) ? today : 'all';
+  };
+  const [dayFilter, setDayFilter] = useState(getToday());
   /* ---------- RENDER ---------- */
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
@@ -214,7 +223,7 @@ const Students = () => {
           </div>
         )}
         {DAYS
-          // 1. Filter the DAYS array itself based on the dropdown selection
+          // Filter the DAYS array itself based on the dropdown selection
           .filter((day) =>
             dayFilter === '' || dayFilter === 'all' ? true : day === dayFilter
           )
