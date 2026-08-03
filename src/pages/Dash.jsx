@@ -1,4 +1,3 @@
-import React from 'react'; // Import React library for creating React components
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from react-router-dom for navigation
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase-config';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, Filter } from 'lucide-react';
 import PropTypes from 'prop-types';
 

@@ -85,6 +85,8 @@ const HomeWork = () => {
       setLoading(true);
       setError('');
 
+      const assignedAt = Timestamp.now();
+
       await addDoc(collection(db, 'homework'), {
         studentId,
         title,
@@ -92,7 +94,7 @@ const HomeWork = () => {
         assignedDate,
         status: 'not_done',
         ownerId: auth.currentUser.uid,
-        assignedAt: Timestamp.now(),
+        assignedAt,
       });
 
       // clear the form
@@ -106,7 +108,7 @@ const HomeWork = () => {
         homeworkHistory: arrayUnion({
           date: assignedDate, // This is the YYYY-MM-DD string
           title: title,
-          assignedAt: Timestamp.now(),
+          assignedAt,
         }),
       });
 

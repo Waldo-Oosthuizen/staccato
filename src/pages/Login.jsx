@@ -1,5 +1,5 @@
 // Fix errors on Login
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import {
   signInWithEmailAndPassword,

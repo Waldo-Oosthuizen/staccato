@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StudentCard from '../components/StudentCard';
 import { Plus, GraduationCap } from 'lucide-react';
 import {
@@ -13,7 +13,6 @@ import {
 } from 'firebase/firestore';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { db } from '../config/firebase-config';
-import { addOwnerIdToExistingDocs } from '../utils/updateOwnerId';
 import FilterBar from '../components/FilterBar';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -30,7 +29,6 @@ const Students = () => {
       if (user) {
         setUid(user.uid);
         setAuthReady(true);
-        addOwnerIdToExistingDocs();
       } else {
         setUid(null);
         setAuthReady(false);

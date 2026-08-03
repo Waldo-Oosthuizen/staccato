@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Importing React for creating the component
+import { useState } from 'react';
 import {
   HashRouter as Router,
   Routes,

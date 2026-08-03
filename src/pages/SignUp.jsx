@@ -1,5 +1,5 @@
 // Importing required dependencies and modules
-import React, { useState, useCallback } from 'react'; // React hooks for state management and side effects
+import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth'; // Firebase functions for user sign-up and Google authentication
 import { auth, googleProvider } from '../config/firebase-config'; // Firebase authentication and Google provider configuration
