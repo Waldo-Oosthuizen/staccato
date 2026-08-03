@@ -99,6 +99,10 @@ const StudentManagement = () => {
   }, []);
 
   const handleAttendance = async (studentId, status) => {
+    if (getAuth().currentUser?.email === 'guest@example.com') {
+      setError('The demo account is read-only.');
+      return;
+    }
     setUpdating(studentId);
     try {
       const studentRef = doc(db, 'students', studentId);

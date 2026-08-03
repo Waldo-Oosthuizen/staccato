@@ -69,6 +69,10 @@ const Students = () => {
   /* ---------- ADD ---------- */
   const handleAddRow = () => {
     if (!authReady) return;
+    if (getAuth().currentUser?.email === 'guest@example.com') {
+      setOperationError('The demo account is read-only.');
+      return;
+    }
 
     setStudents((prev) => [
       {
@@ -98,6 +102,10 @@ const Students = () => {
   const toggleEditMode = async (localId) => {
     const student = students.find((s) => s.localId === localId);
     if (!student) return;
+    if (getAuth().currentUser?.email === 'guest@example.com') {
+      setOperationError('The demo account is read-only.');
+      return;
+    }
 
     const next = students.map((s) =>
       s.localId === localId ? { ...s, isEditable: !s.isEditable } : s
@@ -141,6 +149,10 @@ const Students = () => {
   /* ---------- DELETE ---------- */
   const handleRemoveRow = async (localId) => {
     const st = students.find((s) => s.localId === localId);
+    if (getAuth().currentUser?.email === 'guest@example.com') {
+      setOperationError('The demo account is read-only.');
+      return;
+    }
 
     try {
       setOperationError('');

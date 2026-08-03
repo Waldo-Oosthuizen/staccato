@@ -6,28 +6,76 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isDemoAccount() {
+      return signedIn() && request.auth.token.email == 'guest@example.com';
+    }
+
     function ownsDocument() {
       return signedIn() && resource.data.ownerId == request.auth.uid;
     }
 
-    function createsOwnedDocument() {
-      return signedIn() && request.resource.data.ownerId == request.auth.uid;
+    function canWriteOwnedDocument() {
+      return signedIn() && !isDemoAccount() &&
+        request.resource.data.ownerId == request.auth.uid;
     }
 
     function keepsOwnership() {
       return request.resource.data.ownerId == resource.data.ownerId;
     }
 
+    function validStudentFields() {
+      return request.resource.data.keys().hasOnly([
+        'ownerId', 'name', 'instrument', 'day', 'visitTime', 'duration',
+        'attendance', 'attendanceHistory', 'homeworkHistory'
+      ]) &&
+        request.resource.data.ownerId is string &&
+        request.resource.data.name is string && request.resource.data.name.size() <= 120 &&
+        request.resource.data.instrument is string && request.resource.data.instrument.size() <= 120 &&
+        request.resource.data.day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] &&
+        request.resource.data.visitTime is string && request.resource.data.visitTime.size() <= 5 &&
+        request.resource.data.duration is int &&
+        request.resource.data.duration >= 15 && request.resource.data.duration <= 180 &&
+        (!('attendance' in request.resource.data) || request.resource.data.attendance is string) &&
+        (!('attendanceHistory' in request.resource.data) ||
+          (request.resource.data.attendanceHistory is list &&
+            request.resource.data.attendanceHistory.size() <= 500)) &&
+        (!('homeworkHistory' in request.resource.data) ||
+          (request.resource.data.homeworkHistory is list &&
+            request.resource.data.homeworkHistory.size() <= 500));
+    }
+
+    function validHomeworkFields() {
+      return request.resource.data.keys().hasOnly([
+        'ownerId', 'studentId', 'title', 'description', 'assignedDate',
+        'status', 'assignedAt'
+      ]) &&
+        request.resource.data.ownerId is string &&
+        request.resource.data.studentId is string &&
+        request.resource.data.title is string && request.resource.data.title.size() <= 200 &&
+        request.resource.data.description is string && request.resource.data.description.size() <= 2000 &&
+        request.resource.data.assignedDate is string && request.resource.data.assignedDate.size() == 10 &&
+        request.resource.data.status in ['not_done', 'partial', 'completed'] &&
+        request.resource.data.assignedAt is timestamp;
+    }
+
+    function ownsReferencedStudent() {
+      return get(/databases/$(database)/documents/students/$(request.resource.data.studentId))
+        .data.ownerId == request.auth.uid;
+    }
+
     match /students/{studentId} {
-      allow create: if createsOwnedDocument();
+      allow create: if canWriteOwnedDocument() && validStudentFields();
       allow read, delete: if ownsDocument();
-      allow update: if ownsDocument() && keepsOwnership();
+      allow update: if ownsDocument() && canWriteOwnedDocument() &&
+        keepsOwnership() && validStudentFields();
     }
 
     match /homework/{homeworkId} {
-      allow create: if createsOwnedDocument();
+      allow create: if canWriteOwnedDocument() && validHomeworkFields() &&
+        ownsReferencedStudent();
       allow read, delete: if ownsDocument();
-      allow update: if ownsDocument() && keepsOwnership();
+      allow update: if ownsDocument() && canWriteOwnedDocument() &&
+        keepsOwnership() && validHomeworkFields() && ownsReferencedStudent();
     }
   }
 }

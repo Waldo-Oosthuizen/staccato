@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -6,9 +5,9 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from 'firebase/auth';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getFirestore } from 'firebase/firestore';
 
-// ✅ Correct Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyA72hBNmeeZNWsDVFsS6eVU0vM47NUA5OY',
   authDomain: 'fretnot-attendance-b3026.firebaseapp.com',
@@ -18,24 +17,20 @@ const firebaseConfig = {
   appId: '1:1068497148466:web:538e53b89fc500b9ce3a2b',
 };
 
-// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const appCheckSiteKey = import.meta.env.VITE_FIREBASE_APP_CHECK_SITE_KEY;
 
-// ✅ Initialize Authentication with persistent login
-const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence)
-  .then(() => {
-    console.log('Firebase Auth persistence set to local ✅');
-  })
-  .catch((error) => {
-    console.error('Error setting persistence:', error);
+if (appCheckSiteKey) {
+  initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(appCheckSiteKey),
+    isTokenAutoRefreshEnabled: true,
   });
+}
 
-// ✅ Set up Google Provider
+const auth = getAuth(app);
+void setPersistence(auth, browserLocalPersistence).catch(() => {});
+
 const googleProvider = new GoogleAuthProvider();
-
-// ✅ Initialize Firestore
 const db = getFirestore(app);
 
-// ✅ Export everything
 export { auth, googleProvider, db };

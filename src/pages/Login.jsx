@@ -70,14 +70,9 @@ const Login = ({ setShowSignUp }) => {
     try {
       // 1. Wait for Sign in to finish
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      console.log('✅ Login successful');
       // 2. Navigate immediately
       navigate('/home');
     } catch (err) {
-      console.log('Firebase Error Code:', err.code);
-      console.log('Firebase Error Message:', err.message);
-      console.log('Full Error:', err);
-
       const errorMessage = getFirebaseErrorMessage(err.code);
       setError(errorMessage);
     } finally {
@@ -90,12 +85,10 @@ const Login = ({ setShowSignUp }) => {
     setIsLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
-      console.log('✅ Google login initiated');
-
       // ✅ Wait for Auth state to finalize before navigation
-      onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log('✅ Google Auth confirmed:', user.uid);
+          unsubscribe();
           navigate('/home');
         }
       });

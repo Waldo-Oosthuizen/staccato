@@ -71,6 +71,10 @@ const HomeWork = () => {
 
   // Assign homework function
   const assignHomework = async () => {
+    if (auth.currentUser?.email === 'guest@example.com') {
+      setError('The demo account is read-only.');
+      return;
+    }
     if (!title || !assignedDate) {
       setError('Title and due date are required');
       return;
@@ -126,6 +130,10 @@ const HomeWork = () => {
 
   //  toggle if home work has been done - function
   const updateHomeworkStatus = async (homeworkId, status) => {
+    if (auth.currentUser?.email === 'guest@example.com') {
+      setError('The demo account is read-only.');
+      return;
+    }
     if (!auth.currentUser) return;
 
     try {
@@ -144,6 +152,10 @@ const HomeWork = () => {
 
   // Delete
   const deleteHomework = async (hw) => {
+    if (auth.currentUser?.email === 'guest@example.com') {
+      setError('The demo account is read-only.');
+      return;
+    }
     if (
       !window.confirm(
         `Delete "${hw.title}"? This will also update the progress badge.`
