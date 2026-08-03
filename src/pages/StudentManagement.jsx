@@ -22,7 +22,13 @@ import {
   User,
 } from 'lucide-react';
 import FilterBar from '../components/FilterBar';
-import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
+import {
+  startOfWeek,
+  endOfWeek,
+  isWithinInterval,
+  parseISO,
+} from 'date-fns';
+import { getLocalDate } from '../utils/attendance';
 
 // For filter
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -99,7 +105,7 @@ const StudentManagement = () => {
       const attendanceRecord = {
         status,
         timestamp: Timestamp.now(),
-        date: new Date().toISOString().split('T')[0],
+        date: getLocalDate(),
       };
 
       await updateDoc(studentRef, {

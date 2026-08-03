@@ -21,6 +21,7 @@ const Students = () => {
   const [students, setStudents] = useState([]);
   const [uid, setUid] = useState(null);
   const [authReady, setAuthReady] = useState(false);
+  const [operationError, setOperationError] = useState('');
 
   /* ---------- AUTH ---------- */
   useEffect(() => {
@@ -96,6 +97,7 @@ const Students = () => {
   /* ---------- EDIT / SAVE ---------- */
   const toggleEditMode = async (localId) => {
     const student = students.find((s) => s.localId === localId);
+    if (!student) return;
 
     const next = students.map((s) =>
       s.localId === localId ? { ...s, isEditable: !s.isEditable } : s
@@ -118,11 +120,18 @@ const Students = () => {
         return;
       }
 
-      if (student.id) {
-        await updateDoc(doc(db, 'students', student.id), payload);
-      } else {
-        const ref = await addDoc(collection(db, 'students'), payload);
-        next.find((s) => s.localId === localId).id = ref.id;
+      try {
+        setOperationError('');
+        if (student.id) {
+          await updateDoc(doc(db, 'students', student.id), payload);
+        } else {
+          const ref = await addDoc(collection(db, 'students'), payload);
+          next.find((s) => s.localId === localId).id = ref.id;
+        }
+      } catch (error) {
+        console.error('Failed to save student:', error);
+        setOperationError('Could not save the student. Please try again.');
+        return;
       }
     }
 
@@ -133,11 +142,16 @@ const Students = () => {
   const handleRemoveRow = async (localId) => {
     const st = students.find((s) => s.localId === localId);
 
-    if (st?.id) {
-      await deleteDoc(doc(db, 'students', st.id));
+    try {
+      setOperationError('');
+      if (st?.id) {
+        await deleteDoc(doc(db, 'students', st.id));
+      }
+      setStudents((prev) => prev.filter((s) => s.localId !== localId));
+    } catch (error) {
+      console.error('Failed to delete student:', error);
+      setOperationError('Could not remove the student. Please try again.');
     }
-
-    setStudents((prev) => prev.filter((s) => s.localId !== localId));
   };
 
   /* ---------- GROUP + SORT ---------- */
@@ -200,7 +214,12 @@ const Students = () => {
           </div>
         </div>
       </div>
-      <div className="lg:ml-16 px-4 pb-24 ">
+       <div className="lg:ml-16 px-4 pb-24 ">
+        {operationError && (
+          <p className="mb-4 rounded-md bg-red-50 px-4 py-3 text-red-700">
+            {operationError}
+          </p>
+        )}
         {unscheduledStudents.length > 0 && (
           <div className="mb-10 ">
             <h3 className="text-lg font-bold mt-2 mb-3 border-b pb-1 ">

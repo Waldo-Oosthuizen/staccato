@@ -4,17 +4,17 @@ import { db } from '../config/firebase-config';
 import {
   collection,
   doc,
-  addDoc,
   updateDoc,
-  deleteDoc,
   query,
   where,
   getDocs,
   Timestamp,
   arrayUnion,
   arrayRemove,
+  writeBatch,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { createHomeworkHistoryEntry } from '../utils/homework';
 
 import { Notebook, ArrowLeft, Trash2 } from 'lucide-react';
 
@@ -87,7 +87,16 @@ const HomeWork = () => {
 
       const assignedAt = Timestamp.now();
 
-      await addDoc(collection(db, 'homework'), {
+      const homeworkRef = doc(collection(db, 'homework'));
+      const studentRef = doc(db, 'students', studentId);
+      const homeworkHistoryEntry = createHomeworkHistoryEntry({
+        assignedDate,
+        title,
+        assignedAt,
+      });
+      const batch = writeBatch(db);
+
+      batch.set(homeworkRef, {
         studentId,
         title,
         description,
@@ -96,21 +105,14 @@ const HomeWork = () => {
         ownerId: auth.currentUser.uid,
         assignedAt,
       });
+      batch.update(studentRef, {
+        homeworkHistory: arrayUnion(homeworkHistoryEntry),
+      });
+      await batch.commit();
 
-      // clear the form
       setTitle('');
       setDescription('');
       setAssignedDate('');
-
-      const studentRef = doc(db, 'students', studentId);
-      await updateDoc(studentRef, {
-        // 'date' here must match the key your getWeeklyStatus logic looks for
-        homeworkHistory: arrayUnion({
-          date: assignedDate, // This is the YYYY-MM-DD string
-          title: title,
-          assignedAt,
-        }),
-      });
 
       // Refresh list
       await fetchHomework();
@@ -154,20 +156,18 @@ const HomeWork = () => {
     setLoading(true);
 
     try {
-      // 1. Delete from the main homework collection
-      await deleteDoc(doc(db, 'homework', hw.id));
-
-      // 2. Remove the specific entry from the Student's history array
+      const batch = writeBatch(db);
       const studentRef = doc(db, 'students', studentId);
-      await updateDoc(studentRef, {
+      batch.delete(doc(db, 'homework', hw.id));
+      batch.update(studentRef, {
         homeworkHistory: arrayRemove({
           date: hw.assignedDate,
           title: hw.title,
           assignedAt: hw.assignedAt,
         }),
       });
+      await batch.commit();
 
-      // 3. Update local UI state
       setHomeworkList((prev) => prev.filter((item) => item.id !== hw.id));
     } catch (err) {
       console.error('Error deleting homework:', err);
