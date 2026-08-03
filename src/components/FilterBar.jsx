@@ -1,47 +1,51 @@
-import { Search, Filter } from 'lucide-react';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 import PropTypes from 'prop-types';
 
-const FilterBar = ({ searchTerm, setSearchTerm, dayFilter, setDayFilter }) => {
-  return (
-    <div className="w-full flex flex-col gap-4 md:flex-row">
-      {/* Search Input */}
-      <div className="relative w-full">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-4 text-gray-400" />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-b-emerald-600 focus:bg-white focus:outline-none transition-all w-full focus:shadow-md"
-        />
-      </div>
-
-      {/* Day Filter Dropdown */}
-      <div className="relative md:w-1/3">
-        <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-        <select
-          value={dayFilter}
-          onChange={(e) => setDayFilter(e.target.value)}
-          className="pl-12 pr-10 py-3 bg-white border border-gray-200 rounded-xl focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all appearance-none cursor-pointer w-full">
-          <option value="all">All Days</option>
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
-      </div>
+const FilterBar = ({ searchTerm, setSearchTerm, dayFilter, setDayFilter }) => (
+  <div className="flex w-full flex-col gap-3 sm:flex-row">
+    <div className="relative min-w-0 flex-1">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      <input
+        type="search"
+        placeholder="Search students"
+        aria-label="Search students"
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+      />
+      {searchTerm && (
+        <button
+          type="button"
+          onClick={() => setSearchTerm('')}
+          className="absolute right-2 top-1/2 rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+          aria-label="Clear search">
+          <X className="h-4 w-4" />
+        </button>
+      )}
     </div>
-  );
-};
+    <div className="relative sm:w-52">
+      <SlidersHorizontal className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      <select
+        value={dayFilter}
+        onChange={(event) => setDayFilter(event.target.value)}
+        aria-label="Filter students by day"
+        className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10">
+        <option value="all">All days</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+      </select>
+    </div>
+  </div>
+);
 
-// Prop Validation
 FilterBar.propTypes = {
   searchTerm: PropTypes.string.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
   dayFilter: PropTypes.string.isRequired,
   setDayFilter: PropTypes.func.isRequired,
 };
+
 export default FilterBar;
