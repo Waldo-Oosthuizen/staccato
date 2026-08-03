@@ -42,7 +42,7 @@ const StudentManagement = () => {
   const [updating, setUpdating] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const dayFilter = searchParams.get('day') || 'all';
+  const dayFilter = searchParams.get('day') || getToday();
 
   const handleDayChange = (newDay) => {
     setSearchParams({ day: newDay });
