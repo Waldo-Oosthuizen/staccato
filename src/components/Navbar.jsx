@@ -147,7 +147,7 @@ const Navbar = () => {
               end={item.path === '/'}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center w-full h-full text-sm  
-                ${isActive ? ' font-semibold rounded-t bg-gradient-to-r text-emerald-700' : 'text-slate-500'}`
+                ${isActive ? ' font-semibold rounded-t bg-gradient-to-r text-emerald-700 border-t-2 border-emerald-700' : 'text-slate-500'}`
               }>
               {item.icon}
               <span className="mt-1">{item.label}</span>
