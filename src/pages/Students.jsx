@@ -49,7 +49,7 @@ const Students = () => {
         snap.docs.map((d) => {
           const data = d.data();
           return {
-            localId: d.id, // ✅ STABLE FRONTEND ID
+            localId: d.id,
             id: d.id, // Firestore ID
             name: data.name || '',
             instrument: data.instrument || '',
@@ -66,7 +66,6 @@ const Students = () => {
     return unsub;
   }, [uid, authReady]);
 
-  /* ---------- ADD ---------- */
   const handleAddRow = () => {
     if (!authReady) return;
     if (getAuth().currentUser?.email === 'guest@example.com') {
@@ -76,7 +75,7 @@ const Students = () => {
 
     setStudents((prev) => [
       {
-        localId: crypto.randomUUID(), // ✅ REQUIRED
+        localId: crypto.randomUUID(),
         id: null,
         name: '',
         instrument: '',
@@ -187,7 +186,6 @@ const Students = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   /* ---------- FILTER BY DAY ---------- */
-  // get todays date and filter
   const getToday = () => {
     const today = new Date().toLocaleDateString('en-US', {
       weekday: 'long',
@@ -208,7 +206,7 @@ const Students = () => {
           </h2>
           <button
             onClick={handleAddRow}
-            className="px-4 py-2 mt-4 bg-gradient-to-r from-[#00C853] to-[#009624] shadow-md hover:bg-emerald-800 text-white rounded-md mr-2">
+            className="px-4 py-2 mt-4 bg-emerald-600 shadow-md hover:bg-emerald-800 text-white rounded-md mr-2">
             <Plus className="inline mr-2" />
             Add
           </button>
@@ -216,7 +214,6 @@ const Students = () => {
         <div className="w-full  flex flex-col gap-4  md:flex-row ">
           {' '}
           <div className="relative  w-full ">
-            {/* Use the new component and pass all 4 props */}
             <FilterBar
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -226,7 +223,7 @@ const Students = () => {
           </div>
         </div>
       </div>
-       <div className="lg:ml-16 px-4 pb-24 ">
+      <div className="lg:ml-16 px-4 pb-24 ">
         {operationError && (
           <p className="mb-4 rounded-md bg-red-50 px-4 py-3 text-red-700">
             {operationError}

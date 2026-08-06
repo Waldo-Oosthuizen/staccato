@@ -98,7 +98,7 @@ const Home = () => {
     },
     {
       title: 'Settings',
-      description: 'Manage your session and preferences.',
+      description: 'Logout',
       onClick: () => navigate('/settings'),
       icon: Settings,
     },
@@ -121,7 +121,8 @@ const Home = () => {
                 Your teaching day, at a glance.
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-50 sm:text-base">
-                Keep students, attendance, homework, and your schedule in one calm workspace.
+                Keep students, attendance, homework, and your schedule in one
+                calm workspace.
               </p>
             </div>
             <button
@@ -134,15 +135,25 @@ const Home = () => {
 
         <section className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Students</p>
-            <p className="mt-2 text-3xl font-bold text-slate-900">{studentCount}</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              Students
+            </p>
+            <p className="mt-2 text-3xl font-bold text-slate-900">
+              {studentCount}
+            </p>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lessons today</p>
-            <p className="mt-2 text-3xl font-bold text-emerald-700">{todayStudents.length}</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              Lessons today
+            </p>
+            <p className="mt-2 text-3xl font-bold text-emerald-700">
+              {todayStudents.length}
+            </p>
           </div>
           <div className="col-span-2 rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">Next step</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+              Next step
+            </p>
             <p className="mt-2 text-sm font-semibold text-emerald-950">
               {todayStudents.length
                 ? `You have ${todayStudents.length} lesson${todayStudents.length === 1 ? '' : 's'} to manage today.`
@@ -155,7 +166,9 @@ const Home = () => {
           <div className="mb-4 flex items-end justify-between">
             <div>
               <p className="text-sm font-medium text-emerald-700">Workspace</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900">Manage your studio</h2>
+              <h2 className="mt-1 text-xl font-bold text-slate-900">
+                Manage your studio
+              </h2>
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -168,8 +181,12 @@ const Home = () => {
         <section className="mt-8 rounded-3xl border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-3 border-b border-slate-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div>
-              <p className="text-sm font-medium text-emerald-700">Today&apos;s schedule</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900">Upcoming lessons</h2>
+              <p className="text-sm font-medium text-emerald-700">
+                Today&apos;s schedule
+              </p>
+              <h2 className="mt-1 text-xl font-bold text-slate-900">
+                Upcoming lessons
+              </h2>
             </div>
             <button
               onClick={() => navigate('/schedule')}
@@ -188,13 +205,21 @@ const Home = () => {
                     <Clock3 className="h-5 w-5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-slate-900">{student.name}</p>
+                    <p className="truncate font-semibold text-slate-900">
+                      {student.name}
+                    </p>
                     <p className="mt-0.5 text-sm text-slate-500">
-                      {student.instrument || 'General lesson'} · {formatTime(student.visitTime)} · {student.duration || 60} min
+                      {student.instrument || 'General lesson'} ·{' '}
+                      {formatTime(student.visitTime)} · {student.duration || 60}{' '}
+                      min
                     </p>
                   </div>
                   <button
-                    onClick={() => navigate(`/homework/${student.id}`, { state: { student } })}
+                    onClick={() =>
+                      navigate(`/homework/${student.id}`, {
+                        state: { student },
+                      })
+                    }
                     className="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 sm:inline-flex">
                     <BookOpen className="h-4 w-4" /> Homework
                   </button>
@@ -204,8 +229,12 @@ const Home = () => {
           ) : (
             <div className="px-6 py-12 text-center">
               <CalendarDays className="mx-auto h-10 w-10 text-slate-300" />
-              <h3 className="mt-3 font-semibold text-slate-800">No lessons scheduled</h3>
-              <p className="mt-1 text-sm text-slate-500">Add a student or check your schedule for another day.</p>
+              <h3 className="mt-3 font-semibold text-slate-800">
+                No lessons scheduled
+              </h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Add a student or check your schedule for another day.
+              </p>
             </div>
           )}
         </section>

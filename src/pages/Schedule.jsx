@@ -58,7 +58,7 @@ const buildWeeklyEventsFromStudents = (students, weeksAhead = 12) => {
 
       events.push({
         title: student.name || 'Lesson',
-        instrument: student.instrument || 'General lesson',
+        // instrument: student.instrument || 'General lesson',
         start,
         end,
       });
@@ -122,14 +122,18 @@ const Schedule = () => {
         setEvents(buildWeeklyEventsFromStudents(students));
         setScheduleError('');
       },
-      () => setScheduleError('Your schedule could not be loaded. Please refresh and try again.')
+      () =>
+        setScheduleError(
+          'Your schedule could not be loaded. Please refresh and try again.'
+        )
     );
 
     return unsubscribe;
   }, [authReady, uid]);
 
   const todaysLessons = events.filter(
-    (event) => format(event.start, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
+    (event) =>
+      format(event.start, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
   ).length;
 
   return (
@@ -138,20 +142,31 @@ const Schedule = () => {
         <section className="overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-700 px-6 py-7 text-white shadow-xl sm:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <p className="text-sm font-medium text-emerald-100">Teaching calendar</p>
-              <h1 className="mt-1 text-3xl font-bold tracking-tight">Plan your week with confidence.</h1>
+              <p className="text-sm font-medium text-emerald-100">
+                Teaching calendar
+              </p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight">
+                Plan your week with confidence.
+              </h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-50">
-                Lessons update automatically when you edit a student&apos;s day, time, or duration.
+                Lessons update automatically when you edit a student&apos;s day,
+                time, or duration.
               </p>
             </div>
             <div className="flex gap-3">
               <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-                <p className="text-xs font-medium text-emerald-100">Lessons today</p>
+                <p className="text-xs font-medium text-emerald-100">
+                  Lessons today
+                </p>
                 <p className="mt-1 text-2xl font-bold">{todaysLessons}</p>
               </div>
               <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-                <p className="text-xs font-medium text-emerald-100">Scheduled</p>
-                <p className="mt-1 text-2xl font-bold">{events.length / 12 || 0}</p>
+                <p className="text-xs font-medium text-emerald-100">
+                  Scheduled
+                </p>
+                <p className="mt-1 text-2xl font-bold">
+                  {events.length / 12 || 0}
+                </p>
               </div>
             </div>
           </div>
@@ -159,7 +174,8 @@ const Schedule = () => {
 
         {!authReady && (
           <div className="mt-6 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600 shadow-sm">
-            <Clock3 className="h-5 w-5 animate-pulse text-emerald-600" /> Checking your account…
+            <Clock3 className="h-5 w-5 animate-pulse text-emerald-600" />{' '}
+            Checking your account…
           </div>
         )}
 
@@ -176,12 +192,17 @@ const Schedule = () => {
                 <CalendarDays className="h-5 w-5" />
               </div>
               <div>
-                <h2 className="font-semibold text-slate-900">Lesson timetable</h2>
-                <p className="text-sm text-slate-500">Use the controls to move through your schedule.</p>
+                <h2 className="font-semibold text-slate-900">
+                  Lesson timetable
+                </h2>
+                <p className="text-sm text-slate-500">
+                  Use the controls to move through your schedule.
+                </p>
               </div>
             </div>
             <div className="inline-flex items-center gap-2 text-sm text-slate-500">
-              <Users className="h-4 w-4" /> {events.length / 12 || 0} recurring lessons
+              <Users className="h-4 w-4" /> {events.length / 12 || 0} recurring
+              lessons
             </div>
             <p className="text-xs text-slate-500 sm:hidden">
               Swipe sideways to see the full week.
@@ -191,9 +212,12 @@ const Schedule = () => {
           {authReady && !events.length ? (
             <div className="px-6 py-16 text-center">
               <CalendarDays className="mx-auto h-11 w-11 text-slate-300" />
-              <h3 className="mt-4 font-semibold text-slate-800">No lessons scheduled yet</h3>
+              <h3 className="mt-4 font-semibold text-slate-800">
+                No lessons scheduled yet
+              </h3>
               <p className="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
-                Add lesson days and times to student profiles and they will appear here automatically.
+                Add lesson days and times to student profiles and they will
+                appear here automatically.
               </p>
             </div>
           ) : (
@@ -212,6 +236,7 @@ const Schedule = () => {
                   max={new Date(1970, 0, 1, 20, 0)}
                   step={30}
                   timeslots={2}
+                  // Revert this back to just your original dayFormat
                   formats={{ dayFormat: (date) => format(date, 'EEE dd') }}
                   style={{ height: '100%', width: '100%' }}
                 />

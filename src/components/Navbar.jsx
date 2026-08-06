@@ -41,12 +41,12 @@ const Navbar = () => {
     },
     {
       path: '/StudentManagement',
-      label: 'Attendance',
+      label: 'Manage',
       icon: <HiOutlineClipboardList className="h-6 w-6" />,
     },
     {
       path: '/schedule',
-      label: 'Schedule',
+      label: 'Calendar',
       icon: <AiOutlineCalendar className="h-6 w-6" />,
     },
   ];
@@ -114,7 +114,7 @@ const Navbar = () => {
                 ${isNavOpen ? '' : 'justify-center'}
                 ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#00C853] to-[#009624] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 text-white shadow-md'
                     : 'hover:bg-slate-100 transition-colors duration-200'
                 }`
               }>
@@ -146,8 +146,8 @@ const Navbar = () => {
               to={item.path}
               end={item.path === '/'}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center w-full h-full text-sm
-                ${isActive ? 'text-emerald-600 font-semibold' : 'text-slate-500'}`
+                `flex flex-col items-center justify-center w-full h-full text-sm  
+                ${isActive ? ' font-semibold rounded-t bg-gradient-to-r text-emerald-700' : 'text-slate-500'}`
               }>
               {item.icon}
               <span className="mt-1">{item.label}</span>
