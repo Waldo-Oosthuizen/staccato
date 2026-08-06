@@ -108,8 +108,6 @@ body {
 }
 
 .calendar-event {
-  display: flex;
-  flex-direction: column;
   justify-content: flex-start;
   height: 100%;
   width: 100%;
@@ -119,23 +117,13 @@ body {
 
 .calendar-event p {
   color: #fff;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 700;
   line-height: 1.2;
   overflow: visible;
   text-overflow: clip;
+  overflow-wrap: anywhere;
   margin: 0;
-}
-
-.calendar-event span {
-  display: block;
-  color: #d1fae5;
-  font-size: 0.65rem;
-  margin-top: 0.1rem;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 @media (max-width: 640px) {

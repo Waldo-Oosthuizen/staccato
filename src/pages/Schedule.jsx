@@ -58,7 +58,7 @@ const buildWeeklyEventsFromStudents = (students, weeksAhead = 12) => {
 
       events.push({
         title: student.name || 'Lesson',
-        // instrument: student.instrument || 'General lesson',
+        instrument: student.instrument || 'General lesson',
         start,
         end,
       });
@@ -71,7 +71,6 @@ const buildWeeklyEventsFromStudents = (students, weeksAhead = 12) => {
 const CalendarEvent = ({ event }) => (
   <div className="calendar-event">
     <p>{event.title}</p>
-    <span>{event.instrument}</span>
   </div>
 );
 
